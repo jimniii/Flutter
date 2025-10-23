@@ -23,11 +23,18 @@ void main() {
       '이름: ${name}\n나이:${age}\n키:${height}\n학생여부:${isStudent}\n주소:${address}');
 
 
+
+
+
   // Nullable 타입, dart의 기본 변수는 모두 Non-Nullable, null값 취급하기 위해서 타입 뒤에 ?표기
   String? value1 = null;
   int? value2;
 
   print('value1:${value1}, value2:${value2}');
+
+
+
+
 
 
   // 타입 확인
@@ -57,8 +64,54 @@ void main() {
   print('strCount: ${strCount}');
 
   // 상수
-  final num1 = 100; // 런타임 상수
-  const num2 = 200; // compile 타입 상수
+  final num1 = 100; // 런타임 상수, 실행 시간에 결정
+  const num2 = 200; // compile 타입 상수, 클래스 멤버로 사용
+
+  final today = DateTime.now();
+  print('today: ${today}');
+
+  // 문자열
+  String hello = "Hello Dart!";
+  String welcome = '''
+  Welcome Dart!
+  Welcome World!
+  Welcome Flutter!
+  ''';
+
+  print(hello);
+  print(welcome);
+
+  String escape = "나는 생각한다. \'Dart\'는 재밌따";
+  print(escape);
+
+  String rawStr = r'C:\Users\82104\OneDrive\바탕 화면\workspace\flutter';
+  print(rawStr);
+
+
+  String fName = '길동';
+  String lName = '홍';
+  String fullName = lName + fName;
+  print('이름: ' + fullName);
+  print('이름: $lName$fName'); // 문자열 보간
+
+  String word = 'Flutter';
+  print('문자열 길이: ${word.length}');
+  print('첫번쨰 문자:${word[0]}');
+
+  String text = '   Dart Language     ';
+  print('원본: [$text]');
+  print('소문자: ${text.toLowerCase()}');
+  print('대문자: ${text.toUpperCase()}');
+  print('공백 제거: [${text.trim()}');
+  print('문자 포함 여부: ${text.contains('Dart')}');
+  print('문자열 교체: ${text.replaceAll('Dart', 'Flutter')}');
+
+  String sentence = '서울,대전,대구,부산,광주';
+  var cities = sentence.split(',');
+  print('나눈 결과: $cities');
+  print('다시 합치기: ${cities.join(('/'))}');
+
+
 
 
 
