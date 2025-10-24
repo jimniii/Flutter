@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '테스트임니당',
-      home: const MyHomePage(title: '안뇽'),
+      home: const MyHomePage(title: '05.ROW/COLUMN'),
     );
   }
 }
@@ -42,19 +42,113 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+          // Row: 위젯을 가로로 배치하는 위젯
+          Row(
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.pink,
+              ),
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.pinkAccent,
+              ),
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.lightBlueAccent,
+              ),
+            ],
+          ),
 
-        child: Column(
+          // Column : 위젯을 세로로 배치하는 위젯
+          Column(
+            children:[
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.pink,
+              ),
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.pinkAccent,
+              ),
+              Container(
+                width: 100,
+                height: 100,
+                color: Colors.lightBlueAccent,
+              ),
+            ],
+          ),
 
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          Row(
+            children: [
+              Column(
+                children: [
+                  Text('벚꽃'),
+                  Image.asset(
+                      'images/flower1.jpg',
+                      width:100,
+                      height:100,
+                      fit: BoxFit.fill,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Text('코스모스'),
+                  Image.asset(
+                    'images/flower2.jpg',
+                    width:100,
+                    height:100,
+                    fit: BoxFit.fill,
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Text('해바라기'),
+                  Image.asset(
+                    'images/flower3.jpg',
+                    width:100,
+                    height:100,
+                    fit: BoxFit.fill,
+                  )
+                ],
+              ),
+            ],
+          ),
 
-            Text('Hello Flutter!'),
-            Text('Hello World!')
+          Container(
+            width:400,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.white30,
+              border: Border.all(width:1)
+            ),
+            margin: EdgeInsets.symmetric(vertical:10), // 위,아래 여백 10
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center, // 기본축 정렬
+              crossAxisAlignment: CrossAxisAlignment.stretch, // 교차축 정렬
+              children: [
+                Container(width:50, height:100, color:Colors.redAccent),
+                Container(width:50, height:50, color:Colors.red),
+                Container(width:50, height:150, color:Colors.redAccent),
+              ],
+            ),
+          )
 
-          ],
-        ),
-      ),
+        ],
+      )
+
+
+
 
     );
   }
