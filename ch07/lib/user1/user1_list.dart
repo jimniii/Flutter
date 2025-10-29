@@ -1,5 +1,8 @@
 
+import 'dart:developer';
+
 import 'package:ch07/user1/user1.dart';
+import 'package:ch07/user1/user1_modify.dart';
 import 'package:ch07/user1/user1_register.dart';
 import 'package:ch07/user1/user1_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,21 +15,19 @@ class User1List extends StatefulWidget {
 
 class _User1ListState extends State<User1List> {
 
-  // late : 초기화를 다음으로 미루고 선언
-  late Future<List<User1>> futureuserList;
-
   final service = User1Service();
+
+  // late : 초기화를 연기하고 선언
+  late Future<List<User1>> futureUserList;
 
   @override
   void initState() {
     super.initState();
 
     // 목록 데이터 요청하기
-    futureuserList = service.getUsers();
+    futureUserList = service.getUsers();
 
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _User1ListState extends State<User1List> {
         child: const Icon(Icons.add),
       ),
       body: FutureBuilder(
-          future: futureuserList,
+          future: futureUserList,
           builder: (context, snapshot) {
 
             if(snapshot.connectionState == ConnectionState.waiting){
@@ -59,7 +60,6 @@ class _User1ListState extends State<User1List> {
 
                   final user = userList[index];
 
-
                   return Card(
                     margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: ListTile(
@@ -71,8 +71,58 @@ class _User1ListState extends State<User1List> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(onPressed: (){}, icon: Icon(Icons.edit), color: Colors.blue,),
-                          IconButton(onPressed: (){}, icon: Icon(Icons.delete), color: Colors.red,),
+                          IconButton(
+                            onPressed: () async {
+
+                              // 수정 화면 이동 : 새로운 화면을 스택 위로 쌓음
+                              final modifiedUser = await Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => User1Modify(userid: user.userid)),
+                              );
+
+                              if(modifiedUser != null){
+                                log('modified 성공!!!');
+                                setState(() {
+                                  futureUserList = service.getUsers();
+                                });
+                              }
+
+
+                            },
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('삭제 확인'),
+                                  content: Text('${user.name}(${user.userid}) 을 삭제하시겠습니까?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, false),
+                                      child: const Text('취소'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, true),
+                                      child: const Text('삭제', style: TextStyle(color: Colors.red)),
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              if (confirm != true) return;
+
+                              // 반드시 await 키워드로 완전한 삭제가 끝난후 밑에 다시 목록 요청하기를 해야됨
+                              await service.deleteUser(user.userid);
+
+                              setState(() {
+                                futureUserList = service.getUsers();
+                              });
+
+                            },
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                          ),
                         ],
                       ),
 
